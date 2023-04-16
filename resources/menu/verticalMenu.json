@@ -1,0 +1,29 @@
+{
+  "menu": [
+    {
+      "url": "/time-sheet",
+      "name": "TIME SHEET",
+      "icon": "menu-icon tf-icons ti ti-alarm",
+      "slug": "time-sheet"
+    },
+    {
+      "url": "/tasks-list",
+      "icon": "menu-icon tf-icons ti ti-checklist",
+      "name": "TASKS LIST",
+      "slug": "tasks-list"
+    },
+    {
+      "url": "/contacts-list",
+      "name": "CONTACTS LIST",
+      "icon": "menu-icon tf-icons ti ti-address-book",
+      "slug": "contacts-list"
+    },
+    {
+      "url": "reports",
+      "name": "REPORTS",
+      "icon": "menu-icon tf-icons ti ti-report-analytics",
+      "slug": "reports"
+    }
+    
+  ]
+}
