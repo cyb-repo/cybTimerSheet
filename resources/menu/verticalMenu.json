@@ -13,8 +13,8 @@
       "slug": "tasks-list"
     },
     {
-      "url": "/contacts-list",
-      "name": "CONTACTS LIST",
+      "url": "/clients-list",
+      "name": "CLIENT LIST",
       "icon": "menu-icon tf-icons ti ti-address-book",
       "slug": "contacts-list"
     },

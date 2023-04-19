@@ -8,5 +8,5 @@ $configData = Helper::appClasses();
 
 @section('content')
 <h4>Home Page</h4>
-<p>For more layout options refer <a href="{{ config('variables.documentation') ? config('variables.documentation') : '#' }}" target="_blank" rel="noopener noreferrer">documentation</a>.</p>
+<p>.</p>
 @endsection

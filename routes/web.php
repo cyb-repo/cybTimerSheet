@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +26,9 @@ Route::middleware([
     })->name('dashboard');
     $controller_path = 'App\Http\Controllers';
     Route::get('/', $controller_path . '\pages\HomePage@index')->name('pages-home');
+    Route::get('clients-list',[ClientController::class,'index'])->name('clients.index');
+    Route::post('client-list',[ClientController::class,'store'])->name('clients.store');
+    Route::delete('client-list/{id}',[ClientController::class,'destroy'])->name('clients.destroy');
+    Route::get('client-list/{id}/edit',[ClientController::class,'edit'])->name('clients.edit');
+    Route::get('clients',[ClientController::class,'clients'])->name('clients.get');
 });
