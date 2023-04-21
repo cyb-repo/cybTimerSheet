@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Client Management')
+@section('title', 'Task Management')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -25,7 +25,7 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('js/client-management.js')}}"></script>
+<script src="{{asset('js/task-management.js')}}"></script>
 @endsection
 
 @section('content')
@@ -38,7 +38,7 @@
           <div class="content-left">
             <span>Clients</span>
             <div class="d-flex align-items-end mt-2">
-              <h3 class="mb-0 me-2">{{$totalClient}}</h3>
+              <h3 class="mb-0 me-2">{{$totalTask}}</h3>
               <small class="text-success">(100%)</small>
             </div>
             <small>Total Users</small>
@@ -62,10 +62,12 @@
         <tr>
           <th></th>
           <th>Id</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Company</th>
+          <th>Client</th>
+          <th>Title</th>
           <th>Remark</th>
+          <th>Color</th>
+          <th>Cost Center</th>
+          <th>Billable</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -81,52 +83,48 @@
       <form class="add-new-user pt-0" id="addNewUserForm">
         <input type="hidden" name="id" id="user_id">
         <div class="mb-3">
-          <label class="form-label" for="add-user-fullname">Full Name</label>
-          <input type="text" class="form-control" id="add-user-fullname" placeholder="John Doe" name="name" aria-label="John Doe" />
+          <label class="form-label" for="add-task-title">Title</label>
+          <input type="text" class="form-control" id="add-task-title" placeholder="task title" name="title" aria-label="title" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-user-email">Email</label>
-          <input type="text" id="add-user-email" class="form-control" placeholder="john.doe@example.com" aria-label="john.doe@example.com" name="email" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-user-company">Company</label>
-          <input type="text" id="add-user-company" name="company" class="form-control" placeholder="Web Developer" aria-label="jdoe1" />
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="add-user-remark">Remark</label>
-            <input type="text" id="add-user-remark" name="remark" class="form-control" placeholder="Add remark" aria-label="remark" />
-          </div>
-        
-        {{-- <div class="mb-3">
-          <label class="form-label" for="country">Country</label>
-          <select id="country" class="select2 form-select">
-            <option value="">Select</option>
-            <option value="Australia">Australia</option>
-            <option value="Bangladesh">Bangladesh</option>
-            <option value="Belarus">Belarus</option>
-            <option value="Brazil">Brazil</option>
-            <option value="Canada">Canada</option>
-            <option value="China">China</option>
-            <option value="France">France</option>
-            <option value="Germany">Germany</option>
-            <option value="India">India</option>
-            <option value="Indonesia">Indonesia</option>
-            <option value="Israel">Israel</option>
-            <option value="Italy">Italy</option>
-            <option value="Japan">Japan</option>
-            <option value="Korea">Korea, Republic of</option>
-            <option value="Mexico">Mexico</option>
-            <option value="Philippines">Philippines</option>
-            <option value="Russia">Russian Federation</option>
-            <option value="South Africa">South Africa</option>
-            <option value="Thailand">Thailand</option>
-            <option value="Turkey">Turkey</option>
-            <option value="Ukraine">Ukraine</option>
-            <option value="United Arab Emirates">United Arab Emirates</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="United States">United States</option>
+          <label class="form-label" for="add-task-client">Client</label>
+          <select id="add-task-client" class="select2 form-select" name="client">
+            <option value="" selected>Select</option>
+            @foreach ($clients as $client)
+            <option value="{{$client->id}}">{{$client->name}}</option>
+            @endforeach
           </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-task-cost-center">Remark</label>
+          <textarea  class="form-control" id="add-task-remark" placeholder="task remark" name="remark" aria-label="remark" ></textarea>
+
+        </div>
+        {{-- <div class="mb-3">
+          <label class="form-label" for="add-task-description">Description</label>
+          <textarea name="" id="add-task-description" class="form-control" cols="30" rows="10" name="description"  placeholder="task description..." aria-label="description"></textarea>
         </div> --}}
+        <div class="mb-3">
+          <label class="form-label" for="add-task-color">Color</label>
+          <input type="color" class="form-control" id="add-task-color" placeholder="task color" name="color" aria-label="color" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-task-cost-center">Cost Center</label>
+          <input type="text" class="form-control" id="add-task-cost-center" placeholder="task cost center" name="costcenter" aria-label="cost center" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-task-cost-center">Billable</label>
+          <label class="switch switch-square">
+            <input type="checkbox" class="switch-input" id="add-task-billable" name="billable" />
+            <span class="switch-toggle-slider">
+              <span class="switch-on"></span>
+              <span class="switch-off"></span>
+            </span>
+          </label>
+        </div>
+       
+        
+    
         
         
         <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
