@@ -42,4 +42,5 @@ Route::middleware([
     Route::get('task-list/{id}/edit',[TaskController::class,'edit'])->name('tasks.edit');
     //time sheet
     Route::get('time-sheet',[TimeSheetController::class,'index'])->name('timesheet.index');
+    Route::get('/events', [TimeSheetController::class, 'events'])->name('timesheet.events');
 });

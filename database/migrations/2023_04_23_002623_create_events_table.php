@@ -13,19 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->bigInteger('client_id')->unsigned();
+            $table->string('color');
             $table->bigInteger('user_id')->unsigned();
-            $table->string('cost_center');
-            $table->boolean('is_billable');
-            $table->text('remark')->nullable();
-
-            // Foreign keys on cascade delete
-            $table->foreign('client_id')->references('id')->on('clients')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->bigInteger('task_id')->unsigned();
+            $table->dateTime('start');
+            $table->dateTime('end');
+            $table->boolean('all_day')->default(false);
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
         });
     }
 
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('events');
     }
 };

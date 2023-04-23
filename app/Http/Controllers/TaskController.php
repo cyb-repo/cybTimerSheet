@@ -24,7 +24,6 @@ class TaskController extends Controller
             2 => 'client_id',
             3 => 'title',
             4 => 'remark',
-            5 => 'color',
             6 => 'cost_center',
             7 => 'is_billable',
         ];
@@ -52,7 +51,6 @@ class TaskController extends Controller
             $tasks = Task::where('user_id', auth()->user()->id)
                 ->where('id', 'LIKE', "%{$search}%")
                 ->orWhere('title', 'LIKE', "%{$search}%")
-                ->orWhere('color', 'LIKE', "%{$search}%")
                 ->orWhere('cost_center', 'LIKE', "%{$search}%")
                 ->orWhere('is_billable', 'LIKE', "%{$search}%")
                 ->orWhere('remark', 'LIKE', "%{$search}%")
@@ -64,7 +62,6 @@ class TaskController extends Controller
             $totalFiltered = Task::where('user_id', auth()->user()->id)
                 ->where('id', 'LIKE', "%{$search}%")
                 ->orWhere('title', 'LIKE', "%{$search}%")
-                ->orWhere('color', 'LIKE', "%{$search}%")
                 ->orWhere('cost_center', 'LIKE', "%{$search}%")
                 ->orWhere('is_billable', 'LIKE', "%{$search}%")
                 ->orWhere('remark', 'LIKE', "%{$search}%")
@@ -82,7 +79,6 @@ class TaskController extends Controller
                 $nestedData['id'] = $task->id;
                 $nestedData['title'] = $task->title;
                 $nestedData['client'] = $task->client->name;
-                $nestedData['color'] = $task->color;
                 $nestedData['cost_center'] = $task->cost_center;
                 $nestedData['is_billable'] = $task->is_billable;
                 $nestedData['remark'] = $task->remark;
@@ -121,7 +117,6 @@ class TaskController extends Controller
                     'title' => $request->title,
                     'client_id' => $request->client,
                     'user_id' => auth()->user()->id,
-                    'color' => $request->color,
                     'cost_center' => $request->costcenter,
                     'is_billable' => $request->billable == 'on' ? 1 : 0,
                     'remark' => $request->remark,
@@ -135,7 +130,6 @@ class TaskController extends Controller
                 'title' => $request->title,
                 'client_id' => $request->client,
                 'user_id' => auth()->user()->id,
-                'color' => $request->color,
                 'cost_center' => $request->costcenter,
                 'is_billable' => $request->billable == 'on' ? 1 : 0,
                 'remark' => $request->remark,
