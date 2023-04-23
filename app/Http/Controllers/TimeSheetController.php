@@ -27,11 +27,13 @@ class TimeSheetController extends Controller
             $tasks[] = [
                 'id' => $event->id,
                 'title' => $event->task->title,
-                'task_id'=> $event->task_id,
                 'start' => $event->start,
                 'end' => $event->end,
                 'color' => $event->color,
-                'allDay' => $event->all_day,
+                'allDay' => $event->all_day ? true : false,
+                "extendedProps" => [
+                    "task_id" =>  $event->task_id,
+                ]
             ];
         }
         return response()->json($tasks);

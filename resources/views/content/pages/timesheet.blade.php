@@ -73,8 +73,8 @@
         <div class="offcanvas-body pt-0">
           <form class="event-form pt-0" id="eventForm" onsubmit="return false">
             <div class="mb-3">
-              <label class="form-label" for="add-task-client">Tasks</label>
-              <select id="add-task-client" class="select2 form-select" name="client">
+              <label class="form-label" for="add-task">Tasks</label>
+              <select id="add-task" class="select2 form-select" name="task">
                 <option value="" selected>Select</option>
                 @foreach ($tasks as $task)
                 <option value="{{$task->id}}">{{$task->title}}</option>
