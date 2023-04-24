@@ -89,4 +89,28 @@ class TimeSheetController extends Controller
             return response()->json(['status' => 'error','error' => $exception->getMessage()]);
         }
     }
+    public function copy(Request $request){
+        //copy last week events to this week
+      
+         $events = Event::where('user_id',Auth::user()->id)
+            ->whereBetween('start',[Carbon::now()->subWeek(), Carbon::now()])
+            ->orWhereBetween('end',[Carbon::now()->subWeek(), Carbon::now()])
+            ->get();
+
+        foreach ($events as $event){
+            $start = Carbon::parse($event->start)->addWeek();
+            $end = Carbon::parse($event->end)->addWeek();
+            Event::create([
+                'task_id' => $event->task_id,
+                'start' => $start,
+                'end' => $end,
+                'color' => $event->color,
+                'all_day' => $event->all_day,
+                'user_id' => Auth::user()->id
+            ]);
+        }
+
+        return response()->json(['status' => 'success'],200);
+
+    }
 }

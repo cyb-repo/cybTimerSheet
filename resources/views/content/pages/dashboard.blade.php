@@ -41,7 +41,7 @@ $configData = Helper::appClasses();
             <small>Total Tasks</small>
           </div>
           <span class="badge bg-label-primary rounded p-2">
-            <i class="ti ti-user ti-sm"></i>
+            <i class="ti ti-checklist ti-sm"></i>
           </span>
         </div>
       </div>
@@ -60,7 +60,7 @@ $configData = Helper::appClasses();
             <small>Total Event</small>
           </div>
           <span class="badge bg-label-primary rounded p-2">
-            <i class="ti ti-user ti-sm"></i>
+            <i class="ti ti-calendar-event ti-sm"></i>
           </span>
         </div>
       </div>

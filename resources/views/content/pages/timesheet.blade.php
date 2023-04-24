@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Fullcalendar - Apps')
+@section('title', 'Timesheet')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/fullcalendar/fullcalendar.css')}}" />
@@ -47,7 +47,11 @@
         <div class="inline-calendar"></div>
 
         <hr class="container-m-nx mb-4 mt-3">
-
+        
+          <button class="btn btn-secondary" id="btnCopy" >
+            <i class="ti ti-clipboard-check me-1"></i>
+            <span class="align-middle">Copy Last Week</span>
+          </button>
       
 
        

@@ -44,4 +44,5 @@ Route::middleware([
     Route::post('/events', [TimeSheetController::class, 'store'])->name('timesheet.store');
     Route::post('/events/update', [TimeSheetController::class, 'update'])->name('timesheet.update');
     Route::post('/events/delete', [TimeSheetController::class, 'destroy'])->name('timesheet.destroy');
+    Route::post('/events/copy', [TimeSheetController::class, 'copy'])->name('timesheet.copy');
 });
