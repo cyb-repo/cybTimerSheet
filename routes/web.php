@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TimeSheetController;
 use Illuminate\Support\Facades\Route;
@@ -23,11 +24,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    $controller_path = 'App\Http\Controllers';
-    Route::get('/', $controller_path . '\pages\HomePage@index')->name('pages-home');
+    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class,'index'])->name('pages-home');
     //clients
     Route::get('clients-list',[ClientController::class,'index'])->name('clients.index');
     Route::post('client-list',[ClientController::class,'store'])->name('clients.store');
@@ -43,4 +41,7 @@ Route::middleware([
     //time sheet
     Route::get('time-sheet',[TimeSheetController::class,'index'])->name('timesheet.index');
     Route::get('/events', [TimeSheetController::class, 'events'])->name('timesheet.events');
+    Route::post('/events', [TimeSheetController::class, 'store'])->name('timesheet.store');
+    Route::post('/events/update', [TimeSheetController::class, 'update'])->name('timesheet.update');
+    Route::post('/events/delete', [TimeSheetController::class, 'destroy'])->name('timesheet.destroy');
 });

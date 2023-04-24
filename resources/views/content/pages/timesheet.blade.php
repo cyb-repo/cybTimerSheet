@@ -72,6 +72,7 @@
         </div>
         <div class="offcanvas-body pt-0">
           <form class="event-form pt-0" id="eventForm" onsubmit="return false">
+            @csrf
             <div class="mb-3">
               <label class="form-label" for="add-task">Tasks</label>
               <select id="add-task" class="select2 form-select" name="task">
@@ -96,7 +97,7 @@
               </div>
             <div class="mb-3">
               <label class="switch">
-                <input type="checkbox" class="switch-input allDay-switch" />
+                <input type="checkbox" class="switch-input allDay-switch" name="allDay" checked />
                 <span class="switch-toggle-slider">
                   <span class="switch-on"></span>
                   <span class="switch-off"></span>

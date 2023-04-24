@@ -4,25 +4,25 @@
       "url": "/time-sheet",
       "name": "TIME SHEET",
       "icon": "menu-icon tf-icons ti ti-alarm",
-      "slug": "time-sheet"
+      "slug": "timesheet.index"
     },
     {
       "url": "/tasks-list",
       "icon": "menu-icon tf-icons ti ti-checklist",
       "name": "TASKS LIST",
-      "slug": "tasks-list"
+      "slug": "tasks.index"
     },
     {
       "url": "/clients-list",
       "name": "CLIENT LIST",
       "icon": "menu-icon tf-icons ti ti-address-book",
-      "slug": "contacts-list"
+      "slug": "clients.index"
     },
     {
       "url": "reports",
       "name": "REPORTS",
       "icon": "menu-icon tf-icons ti ti-report-analytics",
-      "slug": "reports"
+      "slug": "reports.index"
     }
     
   ]

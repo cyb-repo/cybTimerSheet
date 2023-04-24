@@ -41,7 +41,7 @@
               <h3 class="mb-0 me-2">{{$totalClient}}</h3>
               <small class="text-success">(100%)</small>
             </div>
-            <small>Total Users</small>
+            <small>Total Clients</small>
           </div>
           <span class="badge bg-label-primary rounded p-2">
             <i class="ti ti-user ti-sm"></i>
