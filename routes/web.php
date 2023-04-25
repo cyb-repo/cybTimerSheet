@@ -3,6 +3,7 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TimeSheetController;
 use Illuminate\Support\Facades\Route;
@@ -45,4 +46,7 @@ Route::middleware([
     Route::post('/events/update', [TimeSheetController::class, 'update'])->name('timesheet.update');
     Route::post('/events/delete', [TimeSheetController::class, 'destroy'])->name('timesheet.destroy');
     Route::post('/events/copy', [TimeSheetController::class, 'copy'])->name('timesheet.copy');
+    //report
+    Route::get('/reports',[ReportController::class,'index'])->name('timesheet.report');
+    Route::get('/download-report/{duration}',[ReportController::class,'download'])->name('timesheet.download');
 });
