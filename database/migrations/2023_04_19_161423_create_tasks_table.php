@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->bigInteger('client_id')->unsigned();
             $table->bigInteger('user_id')->unsigned();
-            $table->string('cost_center');
-            $table->boolean('is_billable');
+            $table->string('cost_center')->nullable();
+            $table->boolean('is_billable')->default(false);
             $table->text('remark')->nullable();
 
             // Foreign keys on cascade delete

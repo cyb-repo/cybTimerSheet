@@ -93,6 +93,16 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     }
 
+    //task select2
+    if (task) {
+      task.select2({
+        placeholder: 'Select a Task',
+        allowClear: true,
+        width: '100%',
+        dropdownParent: $('#addEventSidebar')
+      });
+    }
+
     // Event click function
     function eventClick(info) {
 
@@ -242,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
      
       },
       dateClick: function (info) {
-        let date = moment(info.date).format('YYYY-MM-DD');
+        let date = moment(info.date).format('YYYY-MM-DD HH:mm:ss');
         resetValues();
         bsAddEventSidebar.show();
 
@@ -498,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function () {
           let eventData = {
             _token:token,
             id: eventToUpdate.id,
-            task_id: eventToUpdate.extendedProps.task_id,
+            task_id:  task.val(),
             start: eventStartDate.value,
             end: eventEndDate.value,
             color: color.value,
