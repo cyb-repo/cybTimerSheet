@@ -23,13 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
       appCalendarSidebar = document.querySelector('.app-calendar-sidebar'),
       addEventSidebar = document.getElementById('addEventSidebar'),
       appOverlay = document.querySelector('.app-overlay'),
-      calendarsColor = {
-        Business: 'primary',
-        Holiday: 'success',
-        Personal: 'danger',
-        Family: 'warning',
-        ETC: 'info'
-      },
+    
       offcanvasTitle = document.querySelector('.offcanvas-title'),
       btnToggleSidebar = document.querySelector('.btn-toggle-sidebar'),
       btnSubmit = document.querySelector('button[type="submit"]'),
@@ -46,7 +40,11 @@ document.addEventListener('DOMContentLoaded', function () {
       allDaySwitch = document.querySelector('.allDay-switch'),
       selectAll = document.querySelector('.select-all'),
       filterInput = [].slice.call(document.querySelectorAll('.input-filter')),
-      inlineCalendar = document.querySelector('.inline-calendar');
+      inlineCalendar = document.querySelector('.inline-calendar'),
+      task = $("#add-task"),
+      color = document.querySelector('#event-color'),
+      token = $('meta[name="csrf-token"]').attr('content'),
+      btnCopy = document.querySelector('#btnCopy');
 
     let eventToUpdate,
       currentEvents = events, // Assign app-calendar-events.js file events (assume events from API) to currentEvents (browser store/object) to manage and update calender events
@@ -58,59 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //! TODO: Update Event label and guest code to JS once select removes jQuery dependency
     // Event Label (select2)
-    if (eventLabel.length) {
-      function renderBadges(option) {
-        if (!option.id) {
-          return option.text;
-        }
-        var $badge =
-          "<span class='badge badge-dot bg-" + $(option.element).data('label') + " me-2'> " + '</span>' + option.text;
-
-        return $badge;
-      }
-      eventLabel.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
-        dropdownParent: eventLabel.parent(),
-        templateResult: renderBadges,
-        templateSelection: renderBadges,
-        minimumResultsForSearch: -1,
-        escapeMarkup: function (es) {
-          return es;
-        }
-      });
-    }
-
-    // Event Guests (select2)
-    if (eventGuests.length) {
-      function renderGuestAvatar(option) {
-        if (!option.id) {
-          return option.text;
-        }
-        var $avatar =
-          "<div class='d-flex flex-wrap align-items-center'>" +
-          "<div class='avatar avatar-xs me-2'>" +
-          "<img src='" +
-          assetsPath +
-          'img/avatars/' +
-          $(option.element).data('avatar') +
-          "' alt='avatar' class='rounded-circle' />" +
-          '</div>' +
-          option.text +
-          '</div>';
-
-        return $avatar;
-      }
-      eventGuests.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select value',
-        dropdownParent: eventGuests.parent(),
-        closeOnSelect: false,
-        templateResult: renderGuestAvatar,
-        templateSelection: renderGuestAvatar,
-        escapeMarkup: function (es) {
-          return es;
-        }
-      });
-    }
+   
+   
 
     // Event start (flatpicker)
     if (eventStartDate) {
@@ -148,44 +95,71 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Event click function
     function eventClick(info) {
-      eventToUpdate = info.event;
-      if (eventToUpdate.url) {
-        info.jsEvent.preventDefault();
-        window.open(eventToUpdate.url, '_blank');
-      }
-      bsAddEventSidebar.show();
-      // For update event set offcanvas title text: Update Event
-      if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Update Event';
-      }
-      btnSubmit.innerHTML = 'Update';
-      btnSubmit.classList.add('btn-update-event');
-      btnSubmit.classList.remove('btn-add-event');
-      btnDeleteEvent.classList.remove('d-none');
 
-      eventTitle.value = eventToUpdate.title;
-      start.setDate(eventToUpdate.start, true, 'Y-m-d');
-      eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
-      eventToUpdate.end !== null
-        ? end.setDate(eventToUpdate.end, true, 'Y-m-d')
-        : end.setDate(eventToUpdate.start, true, 'Y-m-d');
-      eventLabel.val(eventToUpdate.extendedProps.calendar).trigger('change');
-      eventToUpdate.extendedProps.location !== undefined
-        ? (eventLocation.value = eventToUpdate.extendedProps.location)
-        : null;
-      eventToUpdate.extendedProps.guests !== undefined
-        ? eventGuests.val(eventToUpdate.extendedProps.guests).trigger('change')
-        : null;
-      eventToUpdate.extendedProps.description !== undefined
-        ? (eventDescription.value = eventToUpdate.extendedProps.description)
-        : null;
+        eventToUpdate = info.event;
+        if (eventToUpdate.url) {
+          info.jsEvent.preventDefault();
+          window.open(eventToUpdate.url, '_blank');
+        }
+        bsAddEventSidebar.show();
+        // For update event set offcanvas title text: Update Event
+        if (offcanvasTitle) {
+          offcanvasTitle.innerHTML = 'Update Event';
+        }
+        btnSubmit.innerHTML = 'Update';
+        btnSubmit.classList.add('btn-update-event');
+        btnSubmit.classList.remove('btn-add-event');
+        btnDeleteEvent.classList.remove('d-none');
 
-      // // Call removeEvent function
-      // btnDeleteEvent.addEventListener('click', e => {
-      //   removeEvent(parseInt(eventToUpdate.id));
-      //   // eventToUpdate.remove();
-      //   bsAddEventSidebar.hide();
-      // });
+        start.setDate(eventToUpdate.start, true, 'Y-m-d');
+        eventToUpdate.allDay === true ? (allDaySwitch.checked = true) : (allDaySwitch.checked = false);
+        eventToUpdate.end !== null
+          ? end.setDate(eventToUpdate.end, true, 'Y-m-d')
+          : end.setDate(eventToUpdate.start, true, 'Y-m-d');
+        task.val(eventToUpdate.extendedProps.task_id).trigger('change');
+        color.value = eventToUpdate.backgroundColor;
+       
+  
+        // // Call removeEvent function
+        // btnDeleteEvent.addEventListener('click', e => {
+        //   removeEvent(parseInt(eventToUpdate.id));
+        //   // eventToUpdate.remove();
+        //   bsAddEventSidebar.hide();
+        // });
+
+    }
+
+    function eventDrop(info) {
+        console.log(info.event)
+        const event = info.event;
+        const eventObj = {
+            _token: token,
+            id: event.id,
+            start: event.startStr,
+            end: event.end !== null
+            ? event.endStr
+            : event.startStr,
+            allDay: event.allDay,
+            color: event.backgroundColor,
+            task_id: event.extendedProps.task_id
+        };
+        updateEvent(eventObj);
+    }
+
+    function eventResize(info) {
+        const event = info.event;
+        const eventObj = {
+            _token: token,
+            id: event.id,
+            start: event.startStr,
+            end: event.end !== null
+            ? event.endStr
+            : event.startStr,
+            allDay: event.allDay,
+            color: event.backgroundColor,
+            task_id: event.extendedProps.task_id
+        };
+        updateEvent(eventObj);
     }
 
     // Modify sidebar toggler
@@ -203,16 +177,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Filter events by calender
-    function selectedCalendars() {
-      let selected = [],
-        filterInputChecked = [].slice.call(document.querySelectorAll('.input-filter:checked'));
-
-      filterInputChecked.forEach(item => {
-        selected.push(item.getAttribute('data-value'));
-      });
-
-      return selected;
-    }
+   
 
     // --------------------------------------------------------------------------------------------------
     // AXIOS: fetchEvents
@@ -220,31 +185,31 @@ document.addEventListener('DOMContentLoaded', function () {
     // --------------------------------------------------------------------------------------------------
     function fetchEvents(info, successCallback) {
       // Fetch Events from API endpoint reference
-      /* $.ajax(
+       $.ajax(
         {
-          url: '../../../app-assets/data/app-calendar-events.js',
+          url: 'events' + '?start=' + info.startStr + '&end=' + info.endStr,
           type: 'GET',
           success: function (result) {
             // Get requested calendars as Array
-            var calendars = selectedCalendars();
-
-            return [result.events.filter(event => calendars.includes(event.extendedProps.calendar))];
+          
+           
+            
+            console.log(result);
+            successCallback(result);
+            
           },
           error: function (error) {
             console.log(error);
           }
         }
-      ); */
+      ); 
 
-      let calendars = selectedCalendars();
+    
       // We are reading event object from app-calendar-events.js file directly by including that file above app-calendar file.
       // You should make an API call, look into above commented API call for reference
-      let selectedEvents = currentEvents.filter(function (event) {
-        // console.log(event.extendedProps.calendar.toLowerCase());
-        return calendars.includes(event.extendedProps.calendar.toLowerCase());
-      });
+    
       // if (selectedEvents.length > 0) {
-      successCallback(selectedEvents);
+      
       // }
     }
 
@@ -271,9 +236,10 @@ document.addEventListener('DOMContentLoaded', function () {
       initialDate: new Date(),
       navLinks: true, // can click day/week names to navigate views
       eventClassNames: function ({ event: calendarEvent }) {
-        const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar];
+        const colorName = calendarEvent.color;
         // Background Color
-        return ['fc-event-' + colorName];
+        return colorName;
+     
       },
       dateClick: function (info) {
         let date = moment(info.date).format('YYYY-MM-DD');
@@ -299,7 +265,14 @@ document.addEventListener('DOMContentLoaded', function () {
       },
       viewDidMount: function () {
         modifyToggler();
-      }
+      },
+      //event drag and drop
+      eventDrop: function (info) {
+        eventDrop(info);
+      },
+     eventResize: function (info) {
+        eventResize(info);
+     }
     });
 
     // Render calendar
@@ -310,10 +283,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const eventForm = document.getElementById('eventForm');
     const fv = FormValidation.formValidation(eventForm, {
       fields: {
-        eventTitle: {
+        task: {
           validators: {
             notEmpty: {
-              message: 'Please enter event title '
+              message: 'Please Select Task '
             }
           }
         },
@@ -369,9 +342,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function addEvent(eventData) {
       // ? Add new event data to current events object and refetch it to display on calender
       // ? You can write below code to AJAX call success response
+      
+      $.ajax(
+        {
+            url: 'events',
+            type: 'POST',
+            data: eventData,
+            success: function (result) {
+                // Get requested calendars as Array
+                if(result.status == 'success'){
+                    console.log(result);
+                    calendar.refetchEvents();
+                    bsAddEventSidebar.hide();
+                }else{
+                    alert(result.error);
+                }
+                
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        }
+        );
 
-      currentEvents.push(eventData);
-      calendar.refetchEvents();
+ 
 
       // ? To add event directly to calender (won't update currentEvents object)
       // calendar.addEvent(eventData);
@@ -383,8 +377,27 @@ document.addEventListener('DOMContentLoaded', function () {
       // ? Update existing event data to current events object and refetch it to display on calender
       // ? You can write below code to AJAX call success response
       eventData.id = parseInt(eventData.id);
-      currentEvents[currentEvents.findIndex(el => el.id === eventData.id)] = eventData; // Update event by id
-      calendar.refetchEvents();
+      
+      $.ajax({
+            url: 'events/update',
+            type: 'POST',
+            data: eventData,
+            success: function (result) {
+                // Get requested calendars as Array
+                if(result.status == 'success'){
+                    console.log(result);
+                    calendar.refetchEvents();
+                    bsAddEventSidebar.hide();
+                }else{
+                    alert(result.error);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+  
+    
 
       // ? To update event directly to calender (won't update currentEvents object)
       // let propsToUpdate = ['id', 'title', 'url'];
@@ -399,10 +412,29 @@ document.addEventListener('DOMContentLoaded', function () {
     function removeEvent(eventId) {
       // ? Delete existing event data to current events object and refetch it to display on calender
       // ? You can write below code to AJAX call success response
-      currentEvents = currentEvents.filter(function (event) {
-        return event.id != eventId;
-      });
-      calendar.refetchEvents();
+     
+      $.ajax({
+            url: 'events/delete',
+            type: 'POST',
+            data: {
+                _token:token,
+                id:eventId
+            },
+            success: function (result) {
+                // Get requested calendars as Array
+                if(result.status == 'success'){
+                    console.log(result);
+                    calendar.refetchEvents();
+                    bsAddEventSidebar.hide();
+                }else{
+                    alert(result.error);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+            
 
       // ? To delete event directly to calender (won't update currentEvents object)
       // removeEventInCalendar(eventId);
@@ -449,73 +481,76 @@ document.addEventListener('DOMContentLoaded', function () {
       if (btnSubmit.classList.contains('btn-add-event')) {
         if (isFormValid) {
           let newEvent = {
-            id: calendar.getEvents().length + 1,
-            title: eventTitle.value,
+            _token:token,
+            task_id: task.val(),
             start: eventStartDate.value,
             end: eventEndDate.value,
-            startStr: eventStartDate.value,
-            endStr: eventEndDate.value,
-            display: 'block',
-            extendedProps: {
-              location: eventLocation.value,
-              guests: eventGuests.val(),
-              calendar: eventLabel.val(),
-              description: eventDescription.value
-            }
+            color: color.value,
+            allDay: allDaySwitch.checked ? true : false,
           };
-          if (eventUrl.value) {
-            newEvent.url = eventUrl.value;
-          }
-          if (allDaySwitch.checked) {
-            newEvent.allDay = true;
-          }
           addEvent(newEvent);
-          bsAddEventSidebar.hide();
+         // bsAddEventSidebar.hide();
         }
       } else {
         // Update event
         // ------------------------------------------------
         if (isFormValid) {
           let eventData = {
+            _token:token,
             id: eventToUpdate.id,
-            title: eventTitle.value,
+            task_id: eventToUpdate.extendedProps.task_id,
             start: eventStartDate.value,
             end: eventEndDate.value,
-            url: eventUrl.value,
-            extendedProps: {
-              location: eventLocation.value,
-              guests: eventGuests.val(),
-              calendar: eventLabel.val(),
-              description: eventDescription.value
-            },
-            display: 'block',
+            color: color.value,
             allDay: allDaySwitch.checked ? true : false
           };
 
           updateEvent(eventData);
-          bsAddEventSidebar.hide();
+         // bsAddEventSidebar.hide();
         }
       }
     });
 
     // Call removeEvent function
     btnDeleteEvent.addEventListener('click', e => {
-      removeEvent(parseInt(eventToUpdate.id));
+        if(confirm('Are you sure you want to delete this event?')){
+            removeEvent(parseInt(eventToUpdate.id));
+          }
       // eventToUpdate.remove();
       bsAddEventSidebar.hide();
+    });
+
+    btnCopy.addEventListener('click', e => {
+        // Copy event
+        if(confirm('Are you sure you want to copylast week events?')){
+            
+            $.ajax({
+                url: 'events/copy',
+                type: 'POST',
+                data: {
+                    _token:token,
+                },
+                success: function (result) {
+                    // Get requested calendars as Array
+                    if(result.status == 'success'){
+                        calendar.refetchEvents();
+                        alert("Events copied successfully")
+                    }else{
+                        alert(result.error);
+                    }
+                }
+            });
+        }
     });
 
     // Reset event form inputs values
     // ------------------------------------------------
     function resetValues() {
       eventEndDate.value = '';
-      eventUrl.value = '';
       eventStartDate.value = '';
-      eventTitle.value = '';
-      eventLocation.value = '';
       allDaySwitch.checked = false;
-      eventGuests.val('').trigger('change');
-      eventDescription.value = '';
+      color.value = '';
+      task.val('').trigger('change');
     }
 
     // When modal hides reset input values

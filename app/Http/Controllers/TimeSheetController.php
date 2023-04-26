@@ -41,13 +41,14 @@ class TimeSheetController extends Controller
     }
 
     public function store(Request $request){
+       
        try{
         Event::create([
-            'task_id' => $request->event['task_id'],
-            'start' => $request->event['start'],
-            'end' => $request->event['end'],
-            'color' => $request->event['color'],
-            'all_day' => $request->event['allDay'] == 'true' ? 1 : 0,
+            'task_id' => $request->task_id,
+            'start' => $request->start,
+            'end' => $request->end,
+            'color' => $request->color,
+            'all_day' => $request->allDay == 'true' ? 1 : 0,
             'user_id' => Auth::user()->id
         ]);
         return response()->json(['status' => 'success'],200);
@@ -60,17 +61,17 @@ class TimeSheetController extends Controller
     public function update(Request $request){
       
         try{
-            $event = Event::find($request->event['id']);
-            $start = $request->event['start'];
-            $end =  $request->event['end'];
+            $event = Event::find($request->id);
+            $start = $request->start;
+            $end =  $request->end;
             $start = Carbon::parse($start)->format('Y-m-d H:i:s');
             $end = Carbon::parse($end)->format('Y-m-d H:i:s');
             $event->update([
-                'task_id' => $request->event['task_id'],
+                'task_id' => $request->task_id,
                 'start' => $start,
                 'end' => $end,
-                'color' => $request->event['color'],
-                'all_day' => $request->event['allDay'] == 'true' ? 1 : 0,
+                'color' => $request->color,
+                'all_day' => $request->allDay == 'true' ? 1 : 0,
             ]);
             return response()->json(['status' => 'success'],200);
         }
@@ -81,7 +82,7 @@ class TimeSheetController extends Controller
 
     public function destroy(Request $request){
         try{
-            $event = Event::find($request->event['id']);
+            $event = Event::findOrFail($request->id);
             $event->delete();
             return response()->json(['status' => 'success'],200);
         }
