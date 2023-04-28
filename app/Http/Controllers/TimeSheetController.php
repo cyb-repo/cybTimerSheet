@@ -19,10 +19,8 @@ class TimeSheetController extends Controller
     public function events(Request $request){
         $start = $request->get('start');
         $end = $request->get('end');
-        $events = Event::where('user_id',Auth::user()->id)
-            ->whereBetween('start',[$start,$end])
-            ->orWhereBetween('end',[$start,$end])
-            ->get();
+        $events = Event::where('user_id',Auth::user()->id)->whereBetween('start',[$start,$end])->whereBetween('end',[$start,$end])->get();
+            
         $tasks = [];
         foreach ($events as $event){
             $tasks[] = [
