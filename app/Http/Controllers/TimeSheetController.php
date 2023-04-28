@@ -30,7 +30,7 @@ class TimeSheetController extends Controller
                 'title' => $event->task->title,
                 'start' => $event->start,
                 'end' => $event->end,
-                'color' => $event->color,
+                'color' => $event->task->color,
                 'allDay' => $event->all_day ? true : false,
                 "extendedProps" => [
                     "task_id" =>  $event->task_id,
@@ -47,7 +47,7 @@ class TimeSheetController extends Controller
             'task_id' => $request->task_id,
             'start' => $request->start,
             'end' => $request->end,
-            'color' => $request->color,
+           // 'color' => $request->color,
             'all_day' => $request->allDay == 'true' ? 1 : 0,
             'user_id' => Auth::user()->id
         ]);
@@ -70,7 +70,7 @@ class TimeSheetController extends Controller
                 'task_id' => $request->task_id,
                 'start' => $start,
                 'end' => $end,
-                'color' => $request->color,
+                //'color' => $request->color,
                 'all_day' => $request->allDay == 'true' ? 1 : 0,
             ]);
             return response()->json(['status' => 'success'],200);
@@ -105,7 +105,7 @@ class TimeSheetController extends Controller
                 'task_id' => $event->task_id,
                 'start' => $start,
                 'end' => $end,
-                'color' => $event->color,
+             //   'color' => $event->color,
                 'all_day' => $event->all_day,
                 'user_id' => Auth::user()->id
             ]);

@@ -38,7 +38,7 @@
         <div class="d-grid">
           <button class="btn btn-primary btn-toggle-sidebar" data-bs-toggle="offcanvas" data-bs-target="#addEventSidebar" aria-controls="addEventSidebar">
             <i class="ti ti-plus me-1"></i>
-            <span class="align-middle">Add Event</span>
+            <span class="align-middle">Add Tasks</span>
           </button>
         </div>
       </div>
@@ -71,7 +71,7 @@
       <!-- FullCalendar Offcanvas -->
       <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="addEventSidebar" aria-labelledby="addEventSidebarLabel">
         <div class="offcanvas-header my-1">
-          <h5 class="offcanvas-title" id="addEventSidebarLabel">Add Event</h5>
+          <h5 class="offcanvas-title" id="addEventSidebarLabel">Add Tasks</h5>
           <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body pt-0">
@@ -95,7 +95,7 @@
               <label class="form-label" for="eventEndDate">End Date</label>
               <input type="text" class="form-control" id="eventEndDate" name="eventEndDate" placeholder="End Date" />
             </div>
-              <div class="mb-3">
+              <div class="mb-3 d-none">
                 <label class="form-label" for="event-color">Color</label>
                 <input type="color" class="form-control" id="event-color" placeholder="task color" name="color" aria-label="color" />
               </div>

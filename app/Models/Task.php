@@ -20,6 +20,11 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function client_user()
+    {
+        return $this->belongsTo(Client::class);
+    }
+
     public function events()
     {
         return $this->hasMany(Event::class);

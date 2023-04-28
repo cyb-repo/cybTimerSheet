@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // For new event set offcanvas title text: Add Event
         if (offcanvasTitle) {
-          offcanvasTitle.innerHTML = 'Add Event';
+          offcanvasTitle.innerHTML = 'Add Tasks';
         }
         btnSubmit.innerHTML = 'Add';
         btnSubmit.classList.remove('btn-update-event');
@@ -571,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hide left sidebar if the right sidebar is open
     btnToggleSidebar.addEventListener('click', e => {
       if (offcanvasTitle) {
-        offcanvasTitle.innerHTML = 'Add Event';
+        offcanvasTitle.innerHTML = 'Add Tasks';
       }
       btnSubmit.innerHTML = 'Add';
       btnSubmit.classList.remove('btn-update-event');

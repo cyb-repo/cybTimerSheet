@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('color');
+          //  $table->string('color');
             $table->bigInteger('user_id')->unsigned();
             $table->bigInteger('task_id')->unsigned();
             $table->dateTime('start');

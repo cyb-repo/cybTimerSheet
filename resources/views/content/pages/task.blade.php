@@ -103,10 +103,10 @@
           <label class="form-label" for="add-task-description">Description</label>
           <textarea name="" id="add-task-description" class="form-control" cols="30" rows="10" name="description"  placeholder="task description..." aria-label="description"></textarea>
         </div> --}}
-        {{-- <div class="mb-3">
+        <div class="mb-3">
           <label class="form-label" for="add-task-color">Color</label>
           <input type="color" class="form-control" id="add-task-color" placeholder="task color" name="color" aria-label="color" />
-        </div> --}}
+        </div>
         <div class="mb-3">
           <label class="form-label" for="add-task-cost-center">Cost Center</label>
           <input type="text" class="form-control" id="add-task-cost-center" placeholder="task cost center" name="costcenter" aria-label="cost center" />

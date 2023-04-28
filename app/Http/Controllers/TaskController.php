@@ -80,6 +80,7 @@ class TaskController extends Controller
                 $nestedData['title'] = $task->title;
                 $nestedData['client'] = $task->client->name;
                 $nestedData['cost_center'] = $task->cost_center;
+                $nestedData['color'] = $task->color;
                 $nestedData['is_billable'] = $task->is_billable;
                 $nestedData['remark'] = $task->remark;
 
@@ -118,6 +119,7 @@ class TaskController extends Controller
                     'client_id' => $request->client,
                     'user_id' => auth()->user()->id,
                     'cost_center' => $request->costcenter,
+                    'color' => $request->color,
                     'is_billable' => $request->billable == 'on' ? 1 : 0,
                     'remark' => $request->remark,
                 ]
@@ -131,6 +133,7 @@ class TaskController extends Controller
                 'client_id' => $request->client,
                 'user_id' => auth()->user()->id,
                 'cost_center' => $request->costcenter,
+                'color' => $request->color,
                 'is_billable' => $request->billable == 'on' ? 1 : 0,
                 'remark' => $request->remark,
             ]);

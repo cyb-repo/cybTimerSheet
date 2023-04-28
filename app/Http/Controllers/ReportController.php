@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ReportController extends Controller
 {
@@ -15,13 +16,13 @@ class ReportController extends Controller
 
     public function download($duration){
         if($duration == 'weekly'){
-            $task = Event::where('created_at','>=',date('Y-m-d',strtotime('monday this week')))->where('created_at','<=',date('Y-m-d',strtotime('sunday this week')))->get();
+         $task = Event::where('start','>=',date('Y-m-d',strtotime('monday this week')))->where('end','<=',date('Y-m-d',strtotime('monday this week +7 days')))->get();
         }
         if($duration == 'monthly'){
-            $task = Event::where('created_at','>=',date('Y-m-d',strtotime('first day of this month')))->where('created_at','<=',date('Y-m-d',strtotime('last day of this month')))->get();
+            $task = Event::where('start','>=' ,date('Y-m-d',strtotime('first day of this month')))->where('end','<=',date('Y-m-d',strtotime('first day of next month')))->get();
         }
         if($duration == 'yearly'){
-             $task = Event::where('created_at','>=',date('Y-m-d',strtotime('first day of january this year')))->where('created_at','<=',date('Y-m-d',strtotime('last day of december this year')))->get();
+            $task = Event::where('start','>=',date('Y-m-d',strtotime('first day of january this year')))->where('end','<=',date('Y-m-d',strtotime('last day of december this year')))->get();
         }
 
         //download as csv 
@@ -40,14 +41,16 @@ class ReportController extends Controller
             $seconds = $date_diff - ($hours * 60 * 60) - ($minutes * 60);
             $t->duration = $hours . ':' . $minutes . ':' . $seconds;
             $data[] = [
-                'date' => $t->created_at,
+                'created_at' => $t->created_at,
                 'task' => $t->task->title,
-                'time_started' => $t->start,
-                'time_ended' => $t->end,
+                'date_started' => Carbon::parse($t->start)->format('Y-m-d'),
+                'date_ended' => Carbon::parse($t->end)->format('Y-m-d'),
+                'time_started' => Carbon::parse($t->start)->format('H:i:s') . ' ' . /*AM OR PM */ Carbon::parse($t->start)->format('A'),
+                'time_ended' => Carbon::parse($t->end)->format('H:i:s') . ' ' . /*AM OR PM */ Carbon::parse($t->end)->format('A'),
                 'time_duration' => $t->duration,
                 'billable' => $t->task->is_billable,
                 'cost_center' => $t->task->cost_center,
-                'client' => $t->task->user->name,
+                'client' => $t->task->client->name,
                 'remark' => $t->task->remark,
             ];
         }
@@ -55,10 +58,10 @@ class ReportController extends Controller
        // dd($data);
         $filename = "report" . date('Y-m-d') . ".csv";
         $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('date','task','time_started','time_ended','time_duration','billable','cost_center','client','remark'));
+        fputcsv($handle, array('created_at','task', 'date_started','date_ended', 'time_started','time_ended','time_duration','billable','cost_center','client','remark'));
 
         foreach($data as $row) {
-            fputcsv($handle, array($row['date'], $row['task'], $row['time_started'], $row['time_ended'], $row['time_duration'], $row['billable'], $row['cost_center'], $row['client'], $row['remark']));
+            fputcsv($handle, array($row['created_at'], $row['task'], $row['date_started'], $row['date_ended'], $row['time_started'], $row['time_ended'], $row['time_duration'], $row['billable'], $row['cost_center'], $row['client'], $row['remark']));
         }
 
         fclose($handle);

@@ -34,7 +34,7 @@
 
 <div class="d-grid gap-3 col-lg-12 mx-auto">
     <button onclick="download('weekly')" class="btn btn-primary btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span> Weekly Report</button>
-    <button onclick="download('monthly')" class="btn btn-info btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span>Weekly Report</button>
+    <button onclick="download('monthly')" class="btn btn-info btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span>Monthly Report</button>
     <button onclick="download('yearly')" class="btn btn-dark  btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span>Yearly Report</button>
 </div>
 
