@@ -117,7 +117,7 @@ class ClientController extends Controller
           // user updated
           return response()->json('Updated');
         } else {
-          $userEmail = Client::where('email', $request->email)->first();
+          $userEmail = Client::where('email', $request->email)->where('user_id',auth()->id())->first();
     
           if (empty($userEmail)) {
             $clinet = Client::updateOrCreate(

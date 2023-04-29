@@ -92,9 +92,9 @@ class TimeSheetController extends Controller
         //copy last week events to this week
       
          $events = Event::where('user_id',Auth::user()->id)
-            ->whereBetween('start',[Carbon::now()->subWeek(), Carbon::now()])
-            ->orWhereBetween('end',[Carbon::now()->subWeek(), Carbon::now()])
-            ->get();
+             ->whereBetween('start',[Carbon::now()->subWeek(), Carbon::now()])
+             ->WhereBetween('end',[Carbon::now()->subWeek(), Carbon::now()])
+             ->get();
 
         foreach ($events as $event){
             $start = Carbon::parse($event->start)->addWeek();
