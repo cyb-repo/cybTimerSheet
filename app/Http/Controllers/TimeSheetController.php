@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -112,4 +113,35 @@ class TimeSheetController extends Controller
         return response()->json(['status' => 'success'],200);
 
     }
+
+    public function AdminEventTask($userId){
+        $users = User::all();
+        $tasks = Task::where('user_id',$userId)->get();
+        return view('content.pages.add-event-admin', compact('users','tasks','userId'));
+    }
+
+    public function AdminEventStore(Request $request,$userId) {
+       
+        $request->validate([
+            'task' => 'required',
+            'eventStartDate' => 'required',
+            'eventEndDate' => 'required'
+        ]);
+        try{
+            Event::create([
+                'task_id' => $request->task,
+                'start' => $request->eventStartDate,
+                'end' => $request->eventEndDate,
+               // 'color' => $request->color,
+                'all_day' => $request->allDay == 'true' ? 1 : 0,
+                'user_id' => $userId
+            ]);
+            session()->flash('created');
+            return redirect()->back();
+           }
+           catch (\Exception $exception){
+               return response()->json(['status' => 'error','error' => $exception->getMessage()]);
+           }
+    }
+
 }

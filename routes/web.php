@@ -3,6 +3,7 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HolidaysController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TimeSheetController;
@@ -39,6 +40,12 @@ Route::middleware([
     Route::get('tasks',[TaskController::class,'tasks'])->name('tasks.get');
     Route::delete('task-list/{id}',[TaskController::class,'destroy'])->name('tasks.destroy');
     Route::get('task-list/{id}/edit',[TaskController::class,'edit'])->name('tasks.edit');
+    //admin
+    Route::get('task-add/{id}/admin',[TaskController::class,'AdminAddTask'])->name('tasks.addtaskadmin')->middleware('admin');
+    Route::post('task-add/create/admin',[TaskController::class,'AdminStoreTask'])->name('tasks.storetaskadmin')->middleware('admin');
+   
+    Route::get('event-add/{id}/admin',[TimeSheetController::class,'AdminEventTask'])->name('timesheet.addeventadmin')->middleware('admin');
+    Route::post('event-add/{id}/admin/create',[TimeSheetController::class,'AdminEventStore'])->name('timesheet.addstoreadmin')->middleware('admin');
     //time sheet
     Route::get('time-sheet',[TimeSheetController::class,'index'])->name('timesheet.index');
     Route::get('/events', [TimeSheetController::class, 'events'])->name('timesheet.events');
@@ -48,5 +55,11 @@ Route::middleware([
     Route::post('/events/copy', [TimeSheetController::class, 'copy'])->name('timesheet.copy');
     //report
     Route::get('/reports',[ReportController::class,'index'])->name('timesheet.report');
-    Route::get('/download-report/{duration}',[ReportController::class,'download'])->name('timesheet.download');
+    Route::get('/download-report/{duration}/{date}',[ReportController::class,'download'])->name('timesheet.download');
+    //dashboard users
+    Route::get('users',[DashboardController::class,'users'])->name('users.get');
+    //holidays
+    Route::get('holidays/{id}/admin',[HolidaysController::class,'index'])->name('holidays.index')->middleware('admin');
+    Route::post('holidays/{id}/admin/create',[HolidaysController::class,'store'])->name('holidays.store')->middleware('admin');
+    
 });

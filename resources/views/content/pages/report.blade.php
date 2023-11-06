@@ -34,7 +34,18 @@
 
 <div class="d-grid gap-3 col-lg-12 mx-auto">
     <button onclick="download('weekly')" class="btn btn-primary btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span> Weekly Report</button>
+    <input type="month" class="form-control" id="month">
     <button onclick="download('monthly')" class="btn btn-info btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span>Monthly Report</button>
+    <select id="year" name="year" class="form-control" id="year">
+        @php
+            $currentYear = date('Y');
+            $startYear = 2023;
+        @endphp
+
+        @for ($i = $startYear; $i <= $currentYear; $i++)
+            <option value="{{ $i }}">{{ $i }}</option>
+        @endfor
+    </select>
     <button onclick="download('yearly')" class="btn btn-dark  btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span>Yearly Report</button>
 </div>
 
@@ -42,7 +53,20 @@
 <script>
 
     function download($d){
-        const url  = '/download-report/'+$d;
+        let date = 'no';
+        if($d == 'monthly'){
+            if(document.getElementById('month').value)
+                date =  document.getElementById('month').value;
+        
+        }else if ($d == 'yearly'){
+            if(document.getElementById('year').value)
+               date =  document.getElementById('year').value;
+        }
+
+     
+
+
+        const url  = '/download-report/'+$d+ '/' + date;
         //ajax javascript
         const xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);

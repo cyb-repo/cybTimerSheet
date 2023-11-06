@@ -117,20 +117,26 @@ class ClientController extends Controller
           // user updated
           return response()->json('Updated');
         } else {
-          $userEmail = Client::where('email', $request->email)->where('user_id',auth()->id())->first();
+          //$userEmail = Client::where('email', $request->email)->where('user_id',auth()->id())->first();
+          $clinet = Client::updateOrCreate(
+            ['id' => $userID],
+            ['name' => $request->name, 'email' => $request->email, 'company' => $request->company, 'remark' => $request->remark, 'user_id' => auth()->user()->id]
+          );
+  
+          // client created
+          return response()->json('Created');
+          // if (empty($userEmail)) {
+          //   $clinet = Client::updateOrCreate(
+          //     ['id' => $userID],
+          //     ['name' => $request->name, 'email' => $request->email, 'company' => $request->company, 'remark' => $request->remark, 'user_id' => auth()->user()->id]
+          //   );
     
-          if (empty($userEmail)) {
-            $clinet = Client::updateOrCreate(
-              ['id' => $userID],
-              ['name' => $request->name, 'email' => $request->email, 'company' => $request->company, 'remark' => $request->remark, 'user_id' => auth()->user()->id]
-            );
-    
-            // client created
-            return response()->json('Created');
-          } else {
-            // user already exist
-            return response()->json(['message' => "Client Email already exits"], 422);
-          }
+          //   // client created
+          //   return response()->json('Created');
+          // } else {
+          //   // user already exist
+          //   return response()->json(['message' => "Client Email already exits"], 422);
+          // }
         }
     }
 

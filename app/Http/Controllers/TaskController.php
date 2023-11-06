@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -14,7 +16,8 @@ class TaskController extends Controller
     {
         $totalTask = Task::where('user_id', auth()->user()->id)->count();
         $clients = Client::where('user_id', auth()->user()->id)->get();
-        return view('content.pages.task', compact('totalTask', 'clients'));
+        $users = User::all();
+        return view('content.pages.task', compact('totalTask', 'clients','users'));
     }
 
     public function tasks(Request $request)
@@ -155,4 +158,42 @@ class TaskController extends Controller
 
         return response()->json('Deleted');
     }
+
+
+    public function AdminAddTask($userId){
+     
+        $clients = Client::where('user_id', auth()->user()->id)->get();
+        $users = User::all();
+        return view('content.pages.add-task-admin', compact( 'clients','users','userId'));
+    }
+
+    public function AdminStoreTask(Request $request){
+        $request->validate([
+            'user' => 'required',
+            'title' => 'required',
+            'client' => 'required',
+            'color' => 'required',
+        ]);
+       
+      
+            // create a new value
+            $task = Task::create([
+                'title' => $request->title,
+                'client_id' => $request->client,
+                'user_id' => $request->user,
+                'cost_center' => $request->costcenter,
+                'color' => $request->color,
+                'is_billable' => $request->billable == 'on' ? 1 : 0,
+                'remark' => $request->remark,
+            ]);
+            // user created
+           session()->flash('created');
+
+           return redirect()->back();
+        
+    }
+
+
+  
+   
 }
