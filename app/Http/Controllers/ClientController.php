@@ -25,7 +25,7 @@ class ClientController extends Controller
       
           $search = [];
       
-          $totalData = Client::where('user_id', auth()->user()->id)->count();
+          $totalData = Client::where('user_id', auth()->user()->id)->where('email','!=','holiday@holiday.com')->count();
       
           $totalFiltered = $totalData;
       
@@ -36,6 +36,7 @@ class ClientController extends Controller
       
           if (empty($request->input('search.value'))) {
             $clients = Client::where('user_id', auth()->user()->id)
+               ->where('email','!=','holiday@holiday.com')
               ->offset($start)
               ->limit($limit)
               ->orderBy($order, $dir)
@@ -44,6 +45,7 @@ class ClientController extends Controller
             $search = $request->input('search.value');
       
             $clients = Client::where('user_id', auth()->user()->id)
+               ->where('email','!=','holiday@holiday.com')
               ->where('id', 'LIKE', "%{$search}%")
               ->orWhere('name', 'LIKE', "%{$search}%")
               ->orWhere('email', 'LIKE', "%{$search}%")
@@ -55,6 +57,7 @@ class ClientController extends Controller
               ->get();
       
             $totalFiltered = Client::where('user_id', auth()->user()->id)
+              ->where('email','!=','holiday@holiday.com')
               ->where('id', 'LIKE', "%{$search}%")
               ->orWhere('name', 'LIKE', "%{$search}%")
               ->orWhere('email', 'LIKE', "%{$search}%")
