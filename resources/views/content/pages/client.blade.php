@@ -81,16 +81,17 @@
       <form class="add-new-user pt-0" id="addNewUserForm">
         <input type="hidden" name="id" id="user_id">
         <div class="mb-3">
-          <label class="form-label" for="add-user-fullname">Full Name</label>
-          <input type="text" class="form-control" id="add-user-fullname" placeholder="John Doe" name="name" aria-label="John Doe" />
+          <label class="form-label" for="add-user-company">Company</label>
+          <input type="text" id="add-user-company" name="company" class="form-control" placeholder="Web Developer" aria-label="jdoe1" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-user-email">Email</label>
           <input type="text" id="add-user-email" class="form-control" placeholder="john.doe@example.com" aria-label="john.doe@example.com" name="email" />
         </div>
+       
         <div class="mb-3">
-          <label class="form-label" for="add-user-company">Company</label>
-          <input type="text" id="add-user-company" name="company" class="form-control" placeholder="Web Developer" aria-label="jdoe1" />
+          <label class="form-label" for="add-user-fullname">Full Name</label>
+          <input type="text" class="form-control" id="add-user-fullname" placeholder="John Doe" name="name" aria-label="John Doe" />
         </div>
         <div class="mb-3">
             <label class="form-label" for="add-user-remark">Remark</label>

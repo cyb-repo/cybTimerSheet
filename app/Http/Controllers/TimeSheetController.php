@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Event;
 use App\Models\Task;
 use App\Models\User;
@@ -114,28 +115,27 @@ class TimeSheetController extends Controller
 
     }
 
-    public function AdminEventTask($userId){
+    public function AdminClient($userId){
         $users = User::all();
         $tasks = Task::where('user_id',$userId)->get();
-        return view('content.pages.add-event-admin', compact('users','tasks','userId'));
+        return view('content.pages.add-client-admin', compact('users','tasks','userId'));
     }
 
-    public function AdminEventStore(Request $request,$userId) {
-       
+    public function AdminClientStore(Request $request,$userId) {
+     
         $request->validate([
-            'task' => 'required',
-            'eventStartDate' => 'required',
-            'eventEndDate' => 'required'
+            'name' => 'required',
         ]);
         try{
-            Event::create([
-                'task_id' => $request->task,
-                'start' => $request->eventStartDate,
-                'end' => $request->eventEndDate,
-               // 'color' => $request->color,
-                'all_day' => $request->allDay == 'true' ? 1 : 0,
-                'user_id' => $userId
-            ]);
+            $clinet = Client::create(   
+                ['name' => $request->name,
+                 'email' => $request->email,
+                 'company' => $request->company,
+                 'remark' => $request->remark,
+                 'user_id' => $userId,
+                ]
+              );
+
             session()->flash('created');
             return redirect()->back();
            }

@@ -44,8 +44,8 @@ Route::middleware([
     Route::get('task-add/{id}/admin',[TaskController::class,'AdminAddTask'])->name('tasks.addtaskadmin')->middleware('admin');
     Route::post('task-add/create/admin',[TaskController::class,'AdminStoreTask'])->name('tasks.storetaskadmin')->middleware('admin');
    
-    Route::get('event-add/{id}/admin',[TimeSheetController::class,'AdminEventTask'])->name('timesheet.addeventadmin')->middleware('admin');
-    Route::post('event-add/{id}/admin/create',[TimeSheetController::class,'AdminEventStore'])->name('timesheet.addstoreadmin')->middleware('admin');
+    Route::get('client-add/{id}/admin',[TimeSheetController::class,'AdminClient'])->name('timesheet.addeventadmin')->middleware('admin');
+    Route::post('client-add/{id}/admin/create',[TimeSheetController::class,'AdminClientStore'])->name('timesheet.addstoreadmin')->middleware('admin');
     //time sheet
     Route::get('time-sheet',[TimeSheetController::class,'index'])->name('timesheet.index');
     Route::get('/events', [TimeSheetController::class, 'events'])->name('timesheet.events');

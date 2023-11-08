@@ -80,7 +80,7 @@ class ReportController extends Controller
         fputcsv($handle, array('date_started', 'task', 'date_started', 'time_started', 'time_ended', 'time_duration', 'billable', 'cost_center', 'client', 'remark'));
 
         foreach ($data as $row) {
-            fputcsv($handle, array($row['task'], $row['date_started'], $row['time_started'], $row['time_ended'], $row['time_duration'], $row['billable'], $row['cost_center'], $row['client'], $row['remark']));
+            fputcsv($handle, array( $row['date_started'],$row['task'], $row['time_started'], $row['time_ended'], $row['time_duration'], $row['billable'], $row['cost_center'], $row['client'], $row['remark']));
         }
 
         fclose($handle);
