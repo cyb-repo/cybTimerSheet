@@ -62,9 +62,9 @@
         <tr>
           <th></th>
           <th>Id</th>
-          <th>Name</th>
-          <th>Email</th>
           <th>Company</th>
+          <th>Email</th>     
+          <th class=" text=start">Name</th>
           <th>Remark</th>
           <th>Actions</th>
         </tr>

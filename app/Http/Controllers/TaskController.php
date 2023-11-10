@@ -81,7 +81,7 @@ class TaskController extends Controller
                 $nestedData['fake_id'] = ++$ids;
                 $nestedData['id'] = $task->id;
                 $nestedData['title'] = $task->title;
-                $nestedData['client'] = $task->client->name;
+                $nestedData['client'] = $task->client->company;
                 $nestedData['cost_center'] = $task->cost_center;
                 $nestedData['color'] = $task->color;
                 $nestedData['is_billable'] = $task->is_billable;

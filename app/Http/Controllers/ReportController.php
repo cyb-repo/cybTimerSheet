@@ -20,17 +20,17 @@ class ReportController extends Controller
 
 
         if ($duration == 'weekly') {
-            $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('monday this week')))->where('end', '<=', date('Y-m-d', strtotime('monday this week +7 days')))->get();
+            $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('monday this week')))->where('end', '<=', date('Y-m-d', strtotime('monday this week +7 days')))->orderBy('start','asc')->get();
         }
         if ($duration == 'monthly') {
             if ($date == 'no') {
-                $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('first day of this month')))->where('end', '<=', date('Y-m-d', strtotime('first day of next month')))->get();
+                $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('first day of this month')))->where('end', '<=', date('Y-m-d', strtotime('first day of next month')))->orderBy('start','asc')->get();
             } else {
                 $startOfMonth = date('Y-m-01', strtotime($date));
                 $endOfMonth = date('Y-m-t', strtotime($date));
 
                 $task = Event::where('user_id',auth()->id())->where('start', '>=', $startOfMonth)
-                    ->where('end', '<=', $endOfMonth)
+                    ->where('end', '<=', $endOfMonth)->orderBy('start','asc')
                     ->get();
             }
         }
@@ -39,6 +39,7 @@ class ReportController extends Controller
 
             $task = Event::where('user_id',auth()->id())->where('start', '>=', $year . '-01-01')
                 ->where('end', '<=', $year . '-12-31')
+                ->orderBy('start','asc')
                 ->get();
             //$task = Event::where('start','>=',date('Y-m-d',strtotime('first day of january this year')))->where('end','<=',date('Y-m-d',strtotime('last day of december this year')))->get();
         }
@@ -77,7 +78,7 @@ class ReportController extends Controller
         // dd($data);
         $filename = "report" . date('Y-m-d') . ".csv";
         $handle = fopen($filename, 'w+');
-        fputcsv($handle, array('date_started', 'task', 'date_started', 'time_started', 'time_ended', 'time_duration', 'billable', 'cost_center', 'client', 'remark'));
+        fputcsv($handle, array('date_started', 'task', 'time_started', 'time_ended', 'time_duration', 'billable', 'cost_center', 'client', 'remark'));
 
         foreach ($data as $row) {
             fputcsv($handle, array( $row['date_started'],$row['task'], $row['time_started'], $row['time_ended'], $row['time_duration'], $row['billable'], $row['cost_center'], $row['client'], $row['remark']));

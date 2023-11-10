@@ -24,8 +24,13 @@ class ClientController extends Controller
           ];
       
           $search = [];
-         
-          $totalData = Client::where('user_id', auth()->user()->id)->where('name','!=','holiday')->count();
+          $holiday_id = Client::where('email','=','holiday@holiday.com')->first();
+          if($holiday_id){
+            $holiday_id = $holiday_id->id;
+          }else{
+            $holiday_id = 0;
+          }
+          $totalData = Client::where('user_id', auth()->user()->id)->where('id','!=',$holiday_id)->count();
       
           $totalFiltered = $totalData;
       
@@ -36,7 +41,7 @@ class ClientController extends Controller
       
           if (empty($request->input('search.value'))) {
             $clients = Client::where('user_id', auth()->user()->id)
-               ->where('name','!=','holiday')
+              ->where('id','!=',$holiday_id)
               ->offset($start)
               ->limit($limit)
               ->orderBy($order, $dir)
@@ -45,7 +50,7 @@ class ClientController extends Controller
             $search = $request->input('search.value');
       
             $clients = Client::where('user_id', auth()->user()->id)
-               ->where('name','!=','holiday')
+              ->where('id','!=',$holiday_id)
               ->where('id', 'LIKE', "%{$search}%")
               ->orWhere('name', 'LIKE', "%{$search}%")
               ->orWhere('email', 'LIKE', "%{$search}%")
@@ -57,12 +62,13 @@ class ClientController extends Controller
               ->get();
       
             $totalFiltered = Client::where('user_id', auth()->user()->id)
-              ->where('name','!=','holiday')
+             
               ->where('id', 'LIKE', "%{$search}%")
               ->orWhere('name', 'LIKE', "%{$search}%")
               ->orWhere('email', 'LIKE', "%{$search}%")
               ->orWhere('company', 'LIKE', "%{$search}%")
               ->orWhere('remark', 'LIKE', "%{$search}%")
+              ->where('id','!=',$holiday_id)
               ->count();
           }
       
