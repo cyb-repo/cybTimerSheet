@@ -42,6 +42,18 @@ $navbarDetached = ($navbarDetached ?? '');
           </a>
         </div>
         <!--/ Style Switcher -->
+        @if(request()->url() === route('timesheet.index'))
+        <div class=" p-4 d-none d-sm-block">
+          <button class="btn btn-secondary" id="btnCopy" >
+            <i class="ti ti-clipboard-check me-1"></i>
+            <span class="align-middle">Copy Last Week</span>
+          </button>
+          <button class="btn btn-info" id="btnWorkDay" >
+            <i class="ti ti-clipboard-work me-1"></i>
+            <span class="align-middle">Work day </span>
+          </button>
+        </div>
+        @endif
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
@@ -164,4 +176,17 @@ $navbarDetached = ($navbarDetached ?? '');
     </div>
     @endif
   </nav>
+  @if(request()->url() === route('timesheet.index'))
+  <div class=" p-4 d-sm-none ">
+    <button class="btn btn-secondary" id="btnCopy" >
+      <i class="ti ti-clipboard-check me-1"></i>
+      <span class="align-middle">Copy Last Week</span>
+    </button>
+    <button class="btn btn-info" id="btnWorkDay" >
+      <i class="ti ti-clipboard-work me-1"></i>
+      <span class="align-middle">Work day </span>
+    </button>
+  </div>
+
+  @endif
   <!-- / Navbar -->

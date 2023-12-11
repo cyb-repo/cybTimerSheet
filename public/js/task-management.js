@@ -506,13 +506,13 @@
               }
           }
         },
-        // remark: {
-        //   validators: {
-        //     notEmpty: {
-        //       message: 'Please enter Remark'
-        //     }
-        //   }
-        // },
+        remark: {
+          validators: {
+            notEmpty: {
+              message: 'Please enter Remark'
+            }
+          }
+        },
         cost_center: {
             validators: {
                 notEmpty: {

@@ -114,6 +114,74 @@ class TimeSheetController extends Controller
         return response()->json(['status' => 'success'],200);
 
     }
+    public function workday(Request $request){
+       
+   $task = Task::where('title','Workday')->first();
+   if(!$task){
+        $client =  Client::where('user_id',auth()->id())->first();
+        if(!$client) return response()->json(['status' => 'error'], 404);
+        $task =  Task::create([
+            'title' => 'Workday',
+            'color' => '#edd38a',
+            'client_id' => $client->id,
+            'is_billable' => false,
+            'user_id' => auth()->id(),
+        ]);     
+   }
+      // Define the time intervals for workday events
+      $morningStart = Carbon::parse('8:00 AM');
+      $morningEnd = Carbon::parse('12:00 PM');
+      $afternoonStart = Carbon::parse('1:00 PM');
+      $afternoonEnd = Carbon::parse('5:00 PM');
+  
+      // Get the current day of the week
+      $currentDayOfWeek = Carbon::now()->dayOfWeek;
+  
+      // Calculate the number of days until the next Friday
+      $daysUntilFriday = Carbon::FRIDAY - $currentDayOfWeek;
+
+    // Loop through each day (from today until next Friday)
+    for ($i = 0; $i <= $daysUntilFriday; $i++) {
+        $currentDay = Carbon::now()->addDays($i)->setTime(0, 0, 0);
+
+        // Check if events already exist for the current day
+        $existingMorningEvent = Event::where('user_id', Auth::user()->id)
+            ->where('start', $currentDay->copy()->setTimeFrom($morningStart))
+            ->where('end', $currentDay->copy()->setTimeFrom($morningEnd))
+            ->count();
+
+        $existingAfternoonEvent = Event::where('user_id', Auth::user()->id)
+            ->where('start', $currentDay->copy()->setTimeFrom($afternoonStart))
+            ->where('end', $currentDay->copy()->setTimeFrom($afternoonEnd))
+            ->count();
+
+
+        if ($existingMorningEvent == 0) {
+        // Add morning event
+        Event::create([
+            'start' =>  $currentDay->copy()->setTime($morningStart->hour, $morningStart->minute, 0),
+            'end' => $currentDay->copy()->setTime($morningEnd->hour, $morningEnd->minute, 0),
+            'user_id' => Auth::user()->id,
+            'task_id' => $task->id,
+            'all_day'=>false
+            // Add other necessary fields
+        ]);
+    }
+    if ($existingAfternoonEvent == 0) {
+
+        // Add afternoon event
+        Event::create([
+            'start' =>  $currentDay->copy()->setTime($afternoonStart->hour, $afternoonStart->minute, 0),
+            'end' =>  $currentDay->copy()->setTime($afternoonEnd->hour, $afternoonEnd->minute, 0),
+            'user_id' => Auth::user()->id,
+            'task_id' => $task->id,
+            'all_day'=>false
+        ]);
+    }
+    }
+
+    return response()->json(['status' => 'success'], 200);
+    }
 
     public function AdminClient($userId){
         $users = User::all();

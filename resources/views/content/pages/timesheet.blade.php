@@ -48,10 +48,7 @@
 
         <hr class="container-m-nx mb-4 mt-3">
         
-          <button class="btn btn-secondary" id="btnCopy" >
-            <i class="ti ti-clipboard-check me-1"></i>
-            <span class="align-middle">Copy Last Week</span>
-          </button>
+     
       
 
        

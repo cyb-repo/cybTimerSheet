@@ -53,6 +53,7 @@ Route::middleware([
     Route::post('/events/update', [TimeSheetController::class, 'update'])->name('timesheet.update');
     Route::post('/events/delete', [TimeSheetController::class, 'destroy'])->name('timesheet.destroy');
     Route::post('/events/copy', [TimeSheetController::class, 'copy'])->name('timesheet.copy');
+    Route::post('/events/workday', [TimeSheetController::class, 'workday'])->name('timesheet.workday');
     //report
     Route::get('/reports',[ReportController::class,'index'])->name('timesheet.report');
     Route::get('/download-report/{duration}/{date}',[ReportController::class,'download'])->name('timesheet.download');

@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
       task = $("#add-task"),
       color = document.querySelector('#event-color'),
       token = $('meta[name="csrf-token"]').attr('content'),
-      btnCopy = document.querySelector('#btnCopy');
+      btnCopy = document.querySelector('#btnCopy'),
+      btnWorkDay = document.querySelector('#btnWorkDay');
 
     let eventToUpdate,
       currentEvents = events, // Assign app-calendar-events.js file events (assume events from API) to currentEvents (browser store/object) to manage and update calender events
@@ -552,6 +553,28 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
+    btnWorkDay.addEventListener('click', e => {
+      if(confirm('Are you sure you want to add work days events?')){
+            
+        $.ajax({
+            url: 'events/workday',
+            type: 'POST',
+            data: {
+                _token:token,
+            },
+            success: function (result) {
+                // Get requested calendars as Array
+                if(result.status == 'success'){
+                    calendar.refetchEvents();
+                    alert("Events Added successfully")
+                }else{
+                    alert(result.error);
+                }
+            }
+        });
+    }
+    })
 
     // Reset event form inputs values
     // ------------------------------------------------
