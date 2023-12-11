@@ -56,7 +56,7 @@ Route::middleware([
     Route::post('/events/workday', [TimeSheetController::class, 'workday'])->name('timesheet.workday');
     //report
     Route::get('/reports',[ReportController::class,'index'])->name('timesheet.report');
-    Route::get('/download-report/{duration}/{date}',[ReportController::class,'download'])->name('timesheet.download');
+    Route::get('/download-report/{duration}/{date}/{client}',[ReportController::class,'download'])->name('timesheet.download');
     //dashboard users
     Route::get('users',[DashboardController::class,'users'])->name('users.get');
     //holidays

@@ -33,10 +33,18 @@
 
 
 <div class="d-grid gap-3 col-lg-12 mx-auto">
+    <select  name="client" class="form-control" id="client">
+        <option value="0">select client</option>
+
+        @foreach ( $clients as $client )
+            
+            <option value="{{ $client->id }}">{{ $client->company }}</option>
+        @endforeach
+    </select>
     <button onclick="download('weekly')" class="btn btn-primary btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span> Weekly Report</button>
     <input type="month" class="form-control" id="month">
     <button onclick="download('monthly')" class="btn btn-info btn-lg  waves-effect waves-light" type="button"> <span class="ti-xs ti ti-cloud-download me-1"></span>Monthly Report</button>
-    <select id="year" name="year" class="form-control" id="year">
+    <select id="year" name="year" class="form-control" >
         @php
             $currentYear = date('Y');
             $startYear = 2023;
@@ -62,11 +70,14 @@
             if(document.getElementById('year').value)
                date =  document.getElementById('year').value;
         }
+      
 
+        let client = document.getElementById('client').value
+      
      
 
 
-        const url  = '/download-report/'+$d+ '/' + date;
+        const url  = '/download-report/'+$d+ '/' + date + '/' + client;
         //ajax javascript
         const xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\Event;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -12,35 +13,86 @@ class ReportController extends Controller
     //
     public function index()
     {
-        return view('content.pages.report');
+        $clients = Client::where('user_id',auth()->id())->get();
+        return view('content.pages.report',compact('clients'));
     }
 
-    public function download($duration, $date)
+    public function download($duration, $date,$client)
     {
 
-
+        
         if ($duration == 'weekly') {
-            $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('monday this week')))->where('end', '<=', date('Y-m-d', strtotime('monday this week +7 days')))->orderBy('start','asc')->get();
-        }
+            if($client == 0)
+              $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('monday this week')))->where('end', '<=', date('Y-m-d', strtotime('monday this week +7 days')))->orderBy('start','asc')->get();
+            else
+            $task = Event::join('tasks', 'events.task_id', '=', 'tasks.id')
+                    ->join('clients', 'tasks.client_id', '=', 'clients.id')
+                    ->where('events.user_id', auth()->id())
+                    ->where('clients.id', $client)
+                    ->where('events.start', '>=', date('Y-m-d', strtotime('monday this week')))
+                    ->where('events.end', '<=', date('Y-m-d', strtotime('monday this week +7 days')))
+                    ->orderBy('events.start', 'asc')
+                    ->select('events.*') // You may need to specify the columns you want to select from the events table
+                    ->get();
+            }
         if ($duration == 'monthly') {
             if ($date == 'no') {
-                $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('first day of this month')))->where('end', '<=', date('Y-m-d', strtotime('first day of next month')))->orderBy('start','asc')->get();
+                if($client == 0)
+                   $task = Event::where('user_id',auth()->id())->where('start', '>=', date('Y-m-d', strtotime('first day of this month')))->where('end', '<=', date('Y-m-d', strtotime('first day of next month')))->orderBy('start','asc')->get();
+                else
+                $task = Event::join('tasks', 'events.task_id', '=', 'tasks.id')
+                    ->join('clients', 'tasks.client_id', '=', 'clients.id')
+                    ->where('events.user_id', auth()->id())
+                    ->where('clients.id', $client)
+                    ->where('start', '>=', date('Y-m-d', strtotime('first day of this month')))
+                    ->where('end', '<=', date('Y-m-d', strtotime('first day of next month')))
+                    ->orderBy('events.start', 'asc')
+                    ->select('events.*') // You may need to specify the columns you want to select from the events table
+                    ->get();
             } else {
                 $startOfMonth = date('Y-m-01', strtotime($date));
                 $endOfMonth = date('Y-m-t', strtotime($date));
-
-                $task = Event::where('user_id',auth()->id())->where('start', '>=', $startOfMonth)
-                    ->where('end', '<=', $endOfMonth)->orderBy('start','asc')
+                if($client == 0)
+                {
+                    $task = Event::where('user_id',auth()->id())
+                        ->where('start', '>=', $startOfMonth)
+                        ->where('end', '<=', $endOfMonth)
+                        ->orderBy('start','asc')
+                        ->get();
+                }else{
+                    $task = Event::join('tasks', 'events.task_id', '=', 'tasks.id')
+                    ->join('clients', 'tasks.client_id', '=', 'clients.id')
+                    ->where('events.user_id', auth()->id())
+                    ->where('clients.id', $client)
+                    ->where('start', '>=', $startOfMonth)
+                    ->where('end', '<=', $endOfMonth)
+                    ->orderBy('events.start', 'asc')
+                    ->select('events.*') // You may need to specify the columns you want to select from the events table
                     ->get();
+                }
+               
             }
         }
         if ($duration == 'yearly') {
             $year = date('Y', strtotime($date));
-
-            $task = Event::where('user_id',auth()->id())->where('start', '>=', $year . '-01-01')
+            if($client == 0){
+                $task = Event::where('user_id',auth()->id())
+                    ->where('start', '>=', $year . '-01-01')
+                    ->where('end', '<=', $year . '-12-31')
+                    ->orderBy('start','asc')
+                    ->get();
+            }else{
+                $task = Event::join('tasks', 'events.task_id', '=', 'tasks.id')
+                ->join('clients', 'tasks.client_id', '=', 'clients.id')
+                ->where('events.user_id', auth()->id())
+                ->where('clients.id', $client)
+                ->where('start', '>=', $year . '-01-01')
                 ->where('end', '<=', $year . '-12-31')
-                ->orderBy('start','asc')
+                ->orderBy('events.start', 'asc')
+                ->select('events.*') // You may need to specify the columns you want to select from the events table
                 ->get();
+            }
+        
             //$task = Event::where('start','>=',date('Y-m-d',strtotime('first day of january this year')))->where('end','<=',date('Y-m-d',strtotime('last day of december this year')))->get();
         }
 
