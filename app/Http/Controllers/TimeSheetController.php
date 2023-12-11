@@ -116,7 +116,7 @@ class TimeSheetController extends Controller
     }
     public function workday(Request $request){
        
-   $task = Task::where('title','Workday')->first();
+   $task = Task::where('title','Workday')->where('user_id',auth()->id())->first();
    if(!$task){
         $client =  Client::where('user_id',auth()->id())->first();
         if(!$client) return response()->json(['status' => 'error'], 404);
