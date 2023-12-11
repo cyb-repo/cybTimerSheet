@@ -70,7 +70,7 @@ class ReportController extends Controller
                 'time_duration' => $t->duration,
                 'billable' => $t->task->is_billable,
                 'cost_center' => $t->task->cost_center,
-                'client' => $t->task->client->name,
+                'client' => $t->task->client->company,
                 'remark' => $t->task->remark,
             ];
         }

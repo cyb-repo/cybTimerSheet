@@ -122,9 +122,9 @@ class TimeSheetController extends Controller
     }
 
     public function AdminClientStore(Request $request,$userId) {
-     
+   
         $request->validate([
-            'name' => 'required',
+            'company' => 'required',
         ]);
         try{
             $clinet = Client::create(   
