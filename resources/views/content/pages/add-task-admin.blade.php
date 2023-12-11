@@ -102,7 +102,7 @@ $(function () {
           <select id="add-task-client" class="select2 form-select" name="client">
             <option value="" selected>Select</option>
             @foreach ($clients as $client)
-            <option value="{{$client->id}}">{{$client->name}}</option>
+            <option value="{{$client->id}}">{{$client->company}}</option>
             @endforeach
           </select>
         </div>

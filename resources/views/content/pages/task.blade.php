@@ -36,7 +36,7 @@
       <div class="card-body">
         <div class="d-flex align-items-start justify-content-between">
           <div class="content-left">
-            <span>Clients</span>
+            <span>Tasks</span>
             <div class="d-flex align-items-end mt-2">
               <h3 class="mb-0 me-2">{{$totalTask}}</h3>
               <small class="text-success">(100%)</small>
